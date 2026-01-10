@@ -7,14 +7,20 @@
 
 import SwiftUI
 
+var goodEnough: GoodEnoughManagement?
+
+class GoodEnoughManagement: NSObject {
+    @StateObject private var store = GoalStore()
+    @State private var hasCompletedSetup: Bool = false   // track if setup completed
+    
+}
+
 @main
 struct GoodEnoughApp: App {
-    let persistenceController = PersistenceController.shared
-
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            RootView()
         }
     }
 }
+

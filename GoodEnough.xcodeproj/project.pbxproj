@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A2552D7D2F0779440039C784 /* GoodEnoughApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552D7C2F0779440039C784 /* GoodEnoughApp.swift */; };
-		A2552D7F2F0779440039C784 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552D7E2F0779440039C784 /* ContentView.swift */; };
 		A2552D812F07794A0039C784 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2552D802F07794A0039C784 /* Assets.xcassets */; };
 		A2552D842F07794A0039C784 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2552D832F07794A0039C784 /* Preview Assets.xcassets */; };
 		A2552D862F07794A0039C784 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552D852F07794A0039C784 /* Persistence.swift */; };
@@ -16,6 +15,16 @@
 		A2552D932F07794A0039C784 /* GoodEnoughTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552D922F07794A0039C784 /* GoodEnoughTests.swift */; };
 		A2552D9D2F07794A0039C784 /* GoodEnoughUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552D9C2F07794A0039C784 /* GoodEnoughUITests.swift */; };
 		A2552D9F2F07794A0039C784 /* GoodEnoughUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552D9E2F07794A0039C784 /* GoodEnoughUITestsLaunchTests.swift */; };
+		A2552DAE2F0847E50039C784 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DAD2F0847E50039C784 /* RootView.swift */; };
+		A2552DB22F084B200039C784 /* GoalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DB12F084B200039C784 /* GoalStore.swift */; };
+		A2552DB42F084B7D0039C784 /* GoalsSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DB32F084B7D0039C784 /* GoalsSetupView.swift */; };
+		A2552DB82F0861C80039C784 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DB72F0861C80039C784 /* MainView.swift */; };
+		A2552DBA2F0B18550039C784 /* DailyCheckInStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DB92F0B18550039C784 /* DailyCheckInStore.swift */; };
+		A2552DBC2F0C60B90039C784 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DBB2F0C60B90039C784 /* AIService.swift */; };
+		A2552DBE2F0F2A090039C784 /* AdjustGoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DBD2F0F2A090039C784 /* AdjustGoalsView.swift */; };
+		A2552DC02F0F2B3C0039C784 /* ReduceGoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DBF2F0F2B3C0039C784 /* ReduceGoalsView.swift */; };
+		A2552DC32F0F3CFC0039C784 /* GoodEnoughUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DC22F0F3CFC0039C784 /* GoodEnoughUtilities.swift */; };
+		A2552DC52F12C5C80039C784 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DC42F12C5C80039C784 /* Goal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +47,6 @@
 /* Begin PBXFileReference section */
 		A2552D792F0779440039C784 /* GoodEnough.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoodEnough.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2552D7C2F0779440039C784 /* GoodEnoughApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodEnoughApp.swift; sourceTree = "<group>"; };
-		A2552D7E2F0779440039C784 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A2552D802F07794A0039C784 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2552D832F07794A0039C784 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A2552D852F07794A0039C784 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -48,6 +56,16 @@
 		A2552D982F07794A0039C784 /* GoodEnoughUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoodEnoughUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2552D9C2F07794A0039C784 /* GoodEnoughUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodEnoughUITests.swift; sourceTree = "<group>"; };
 		A2552D9E2F07794A0039C784 /* GoodEnoughUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodEnoughUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A2552DAD2F0847E50039C784 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		A2552DB12F084B200039C784 /* GoalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStore.swift; sourceTree = "<group>"; };
+		A2552DB32F084B7D0039C784 /* GoalsSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsSetupView.swift; sourceTree = "<group>"; };
+		A2552DB72F0861C80039C784 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		A2552DB92F0B18550039C784 /* DailyCheckInStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCheckInStore.swift; sourceTree = "<group>"; };
+		A2552DBB2F0C60B90039C784 /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
+		A2552DBD2F0F2A090039C784 /* AdjustGoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustGoalsView.swift; sourceTree = "<group>"; };
+		A2552DBF2F0F2B3C0039C784 /* ReduceGoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReduceGoalsView.swift; sourceTree = "<group>"; };
+		A2552DC22F0F3CFC0039C784 /* GoodEnoughUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodEnoughUtilities.swift; sourceTree = "<group>"; };
+		A2552DC42F12C5C80039C784 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,9 +116,18 @@
 		A2552D7B2F0779440039C784 /* GoodEnough */ = {
 			isa = PBXGroup;
 			children = (
+				A2552DC12F0F3CCA0039C784 /* GoodEnoughUtilities */,
+				A2552DB12F084B200039C784 /* GoalStore.swift */,
+				A2552DC42F12C5C80039C784 /* Goal.swift */,
+				A2552DB32F084B7D0039C784 /* GoalsSetupView.swift */,
+				A2552DBD2F0F2A090039C784 /* AdjustGoalsView.swift */,
+				A2552DBF2F0F2B3C0039C784 /* ReduceGoalsView.swift */,
+				A2552DAD2F0847E50039C784 /* RootView.swift */,
+				A2552DB72F0861C80039C784 /* MainView.swift */,
+				A2552DB92F0B18550039C784 /* DailyCheckInStore.swift */,
 				A2552D7C2F0779440039C784 /* GoodEnoughApp.swift */,
-				A2552D7E2F0779440039C784 /* ContentView.swift */,
 				A2552D802F07794A0039C784 /* Assets.xcassets */,
+				A2552DBB2F0C60B90039C784 /* AIService.swift */,
 				A2552D852F07794A0039C784 /* Persistence.swift */,
 				A2552D872F07794A0039C784 /* GoodEnough.xcdatamodeld */,
 				A2552D822F07794A0039C784 /* Preview Content */,
@@ -131,6 +158,14 @@
 				A2552D9E2F07794A0039C784 /* GoodEnoughUITestsLaunchTests.swift */,
 			);
 			path = GoodEnoughUITests;
+			sourceTree = "<group>";
+		};
+		A2552DC12F0F3CCA0039C784 /* GoodEnoughUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				A2552DC22F0F3CFC0039C784 /* GoodEnoughUtilities.swift */,
+			);
+			path = GoodEnoughUtilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,10 +298,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2552DBE2F0F2A090039C784 /* AdjustGoalsView.swift in Sources */,
+				A2552DC02F0F2B3C0039C784 /* ReduceGoalsView.swift in Sources */,
 				A2552D862F07794A0039C784 /* Persistence.swift in Sources */,
-				A2552D7F2F0779440039C784 /* ContentView.swift in Sources */,
+				A2552DC32F0F3CFC0039C784 /* GoodEnoughUtilities.swift in Sources */,
+				A2552DB82F0861C80039C784 /* MainView.swift in Sources */,
+				A2552DAE2F0847E50039C784 /* RootView.swift in Sources */,
+				A2552DB22F084B200039C784 /* GoalStore.swift in Sources */,
+				A2552DB42F084B7D0039C784 /* GoalsSetupView.swift in Sources */,
+				A2552DC52F12C5C80039C784 /* Goal.swift in Sources */,
+				A2552DBA2F0B18550039C784 /* DailyCheckInStore.swift in Sources */,
 				A2552D892F07794A0039C784 /* GoodEnough.xcdatamodeld in Sources */,
 				A2552D7D2F0779440039C784 /* GoodEnoughApp.swift in Sources */,
+				A2552DBC2F0C60B90039C784 /* AIService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

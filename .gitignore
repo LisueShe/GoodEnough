@@ -1,0 +1,18 @@
+# Xcode
+*.xcworkspace
+*.xcuserdata
+*.moved-aside
+DerivedData/
+build/
+*.swp
+
+# Swift Package Manager
+/.build
+/Packages
+
+# CocoaPods
+Pods/
+
+# UserDefaults / local settings
+*.plist
+
