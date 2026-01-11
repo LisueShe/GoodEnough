@@ -71,7 +71,16 @@ struct MainView: View {
                                 Text("Today is complete 🌱")
                                     .font(.subheadline)
                                     .foregroundColor(.green)
-                                
+                                Text(
+                                        DailyReflection.generate(
+                                            mood: dailyCheckIn.selectedMood,
+                                            completed: dailyGoals.completedGoalIDs.count,
+                                            total: dailyGoals.activeGoalIDs.count
+                                        )
+                                    )
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.secondary)
+                                  //  .padding()
                                 // Optional: undo button
                                 Button {
                                     dailyCheckIn.unlockToday()
@@ -79,7 +88,7 @@ struct MainView: View {
                                 } label: {
                                     Text("Undo today’s completion")
                                         .font(.footnote)
-                                        .foregroundColor(.gray)
+                                        .foregroundColor(.blue)
                                 }
                             }
                             .frame(maxWidth: .infinity)
@@ -108,6 +117,7 @@ struct MainView: View {
                                 HStack {
                                     Spacer()
                                     Button {
+                                        dailyCheckIn.saveDay(completedGoals: Array(dailyGoals.completedGoalIDs))
                                         dailyCheckIn.lockToday()
                                     } label: {
                                         Text("Check Out for Today")
@@ -191,6 +201,18 @@ struct MainView: View {
                 )
             }
             .onAppear {
+                let today = Calendar.current.startOfDay(for: Date())
+                
+                // Reset daily goals if it's a new day
+                dailyGoals.initializeForToday(with: store.goals)
+                
+                // Reset mood and lock if new day
+                if !Calendar.current.isDate(dailyCheckIn.lastSavedDate, inSameDayAs: today) {
+                    dailyCheckIn.resetForNewDay()
+                }
+            }
+/*
+            .onAppear {
                 dailyGoals.initializeForToday(
                     with: store.goals.map { $0.id }
                 )
@@ -199,8 +221,10 @@ struct MainView: View {
                     dailyGoals.resetForNewDay()
                 }
             }
+ */
             .onChange(of: dailyGoals.completedGoalIDs) { _ in
                 if dailyGoals.allGoalsCompleted(allGoals: store.goals) && !dailyCheckIn.isLocked {
+                    dailyCheckIn.saveDay(completedGoals: Array(dailyGoals.completedGoalIDs))
                     dailyCheckIn.lockToday()
                 }
             }

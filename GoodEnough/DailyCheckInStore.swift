@@ -14,66 +14,103 @@ struct DailyCheckInData: Codable {
     let date: Date
 }
 
+struct DailyGoalData: Codable {
+    let completedGoalIDs: [UUID]
+    let activeGoalIDs: [UUID]
+    let date: Date
+}
+
+struct DailyHistory: Codable, Identifiable {
+    let id = UUID()
+    let date: Date
+    let completedGoals: [UUID]
+    let mood: Mood?
+}
+
+struct SavedCheckInData: Codable {
+    let history: [DailyHistory]
+    let lastSavedDate: Date
+}
+
+struct DailyReflection {
+    static func generate(
+        mood: Mood?,
+        completed: Int,
+        total: Int
+    ) -> String {
+        if completed == 0 {
+            //"Today is complete 🌱"
+            return "Showing up is still progress. Rest without guilt."
+        }
+
+        if completed < total {
+            return "You made progress today. That matters."
+        }
+
+        return "You honored your intentions today. Well done."
+    }
+}
+
+enum TomorrowIntent: String, Codable {
+    case same
+    case lighter
+    case undecided
+}
+
 class DailyCheckInStore: ObservableObject {
-  //  @Published var selectedMood: Mood?
-  //  @Published var isLocked: Bool = false
-    private let moodKey = "daily_mood"
-    private let dateKey = "daily_mood_date"
-
-    @Published var selectedMood: Mood? {
-        didSet { save() }
+    @Published var isLocked = false
+    @Published var selectedMood: Mood? = nil {
+            didSet { save() }
     }
+    @Published private(set) var lastSavedDate: Date = Date()
+    @Published private(set) var history: [DailyHistory] = []
 
-    @Published var isLocked: Bool = false {
-        didSet { save() }
-    }
+    private let storageKey = "DailyCheckInData"
 
-    private let storageKey = "DailyCheckIn"
-    
     init() {
         load()
     }
 
     func lockToday() {
         isLocked = true
+        save()
     }
 
     func unlockToday() {
         isLocked = false
+        save()
     }
 
-    private func save() {
-            let data = DailyCheckInData(
-                selectedMood: selectedMood,
-                isLocked: isLocked,
-                date: Date()
-            )
+    func saveDay(completedGoals: [UUID]) {
+        let today = Calendar.current.startOfDay(for: Date())
+        let record = DailyHistory(date: today, completedGoals: completedGoals, mood: selectedMood)
+        history.append(record)
+        lastSavedDate = today
+        save()
+    }
 
-            if let encoded = try? JSONEncoder().encode(data) {
-                UserDefaults.standard.set(encoded, forKey: storageKey)
-            }
-        }
-
-        private func load() {
-            guard
-                let data = UserDefaults.standard.data(forKey: storageKey),
-                let decoded = try? JSONDecoder().decode(DailyCheckInData.self, from: data)
-            else { return }
-
-            selectedMood = decoded.selectedMood
-            isLocked = decoded.isLocked
-        }
-    
     func resetForNewDay() {
         selectedMood = nil
         isLocked = false
+        save()
     }
-}
+    
+    private func load() {
+        guard
+            let data = UserDefaults.standard.data(forKey: storageKey),
+            let decoded = try? JSONDecoder().decode(SavedCheckInData.self, from: data)
+        else { return }
+        
+        history = decoded.history
+        lastSavedDate = decoded.lastSavedDate
+    }
 
-struct DailyGoalData: Codable {
-    let completedGoalIDs: [UUID]
-    let activeGoalIDs: [UUID]
-    let date: Date
+    private func save() {
+        let data = SavedCheckInData(history: history, lastSavedDate: lastSavedDate)
+        if let encoded = try? JSONEncoder().encode(data) {
+            UserDefaults.standard.set(encoded, forKey: storageKey)
+        }
+    }
 }
 
 class DailyGoalStore: ObservableObject {
@@ -184,3 +221,18 @@ class DailyGoalStore: ObservableObject {
     }
 }
 
+extension DailyGoalStore {
+    func initializeForToday(with allGoals: [Goal]) {
+        let today = Calendar.current.startOfDay(for: Date())
+        
+        // If lastSavedDate is today, do nothing
+        if let last = lastSavedDate, Calendar.current.isDate(last, inSameDayAs: today) {
+            return
+        }
+
+        // Reset for new day
+        resetForNewDay()
+        activeGoalIDs = Set(allGoals.map { $0.id })
+        lastSavedDate = today
+    }
+}
