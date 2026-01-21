@@ -25,6 +25,9 @@
 		A2552DC02F0F2B3C0039C784 /* ReduceGoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DBF2F0F2B3C0039C784 /* ReduceGoalsView.swift */; };
 		A2552DC32F0F3CFC0039C784 /* GoodEnoughUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DC22F0F3CFC0039C784 /* GoodEnoughUtilities.swift */; };
 		A2552DC52F12C5C80039C784 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DC42F12C5C80039C784 /* Goal.swift */; };
+		A2552DC72F14359F0039C784 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DC62F14359F0039C784 /* HistoryView.swift */; };
+		A2552DC92F183C0E0039C784 /* DailySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DC82F183C0E0039C784 /* DailySummaryView.swift */; };
+		A2552DCB2F18581B0039C784 /* WeeklySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2552DCA2F18581B0039C784 /* WeeklySummaryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +69,9 @@
 		A2552DBF2F0F2B3C0039C784 /* ReduceGoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReduceGoalsView.swift; sourceTree = "<group>"; };
 		A2552DC22F0F3CFC0039C784 /* GoodEnoughUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodEnoughUtilities.swift; sourceTree = "<group>"; };
 		A2552DC42F12C5C80039C784 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
+		A2552DC62F14359F0039C784 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		A2552DC82F183C0E0039C784 /* DailySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySummaryView.swift; sourceTree = "<group>"; };
+		A2552DCA2F18581B0039C784 /* WeeklySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklySummaryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +128,9 @@
 				A2552DB32F084B7D0039C784 /* GoalsSetupView.swift */,
 				A2552DBD2F0F2A090039C784 /* AdjustGoalsView.swift */,
 				A2552DBF2F0F2B3C0039C784 /* ReduceGoalsView.swift */,
+				A2552DC62F14359F0039C784 /* HistoryView.swift */,
+				A2552DC82F183C0E0039C784 /* DailySummaryView.swift */,
+				A2552DCA2F18581B0039C784 /* WeeklySummaryView.swift */,
 				A2552DAD2F0847E50039C784 /* RootView.swift */,
 				A2552DB72F0861C80039C784 /* MainView.swift */,
 				A2552DB92F0B18550039C784 /* DailyCheckInStore.swift */,
@@ -305,9 +314,12 @@
 				A2552DB82F0861C80039C784 /* MainView.swift in Sources */,
 				A2552DAE2F0847E50039C784 /* RootView.swift in Sources */,
 				A2552DB22F084B200039C784 /* GoalStore.swift in Sources */,
+				A2552DC72F14359F0039C784 /* HistoryView.swift in Sources */,
+				A2552DC92F183C0E0039C784 /* DailySummaryView.swift in Sources */,
 				A2552DB42F084B7D0039C784 /* GoalsSetupView.swift in Sources */,
 				A2552DC52F12C5C80039C784 /* Goal.swift in Sources */,
 				A2552DBA2F0B18550039C784 /* DailyCheckInStore.swift in Sources */,
+				A2552DCB2F18581B0039C784 /* WeeklySummaryView.swift in Sources */,
 				A2552D892F07794A0039C784 /* GoodEnough.xcdatamodeld in Sources */,
 				A2552D7D2F0779440039C784 /* GoodEnoughApp.swift in Sources */,
 				A2552DBC2F0C60B90039C784 /* AIService.swift in Sources */,

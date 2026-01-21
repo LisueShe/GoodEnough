@@ -13,9 +13,21 @@ struct GoalSetupView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var newGoalTitle: String = ""
     
+    private var helperText: String {
+         store.goals.isEmpty
+         ? "One goal is enough to begin."
+         : "You can always adjust this later."
+    }
+     
     var body: some View {
         NavigationView {
             VStack {
+                Text(helperText)
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+                    .padding(.bottom, 8)
+                    .padding(.top, 50)
+        
                 HStack {
                     TextField("Enter goal", text: $newGoalTitle)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -32,6 +44,7 @@ struct GoalSetupView: View {
 
                 List {
                     ForEach(store.goals) { goal in
+                   // ForEach(store.goals.filter { $0.status != .deleted }) { goal in
                         HStack {
                             Text(goal.title)
                             Spacer()
@@ -62,7 +75,10 @@ struct GoalSetupView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Setup Goals")
+          //  .navigationTitle("Setup Goals")
+          //  .navigationBarTitleDisplayMode(.inline)
         }
+        .navigationTitle("Setup Goals")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

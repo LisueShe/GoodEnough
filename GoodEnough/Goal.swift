@@ -7,17 +7,20 @@
 
 import Foundation
 
+/*
 struct Goal: Identifiable, Codable, Equatable {
     let id: UUID
     var title: String
-
-    init(id: UUID = UUID(), title: String) {
+    var date: Date
+    
+    init(id: UUID = UUID(), title: String, date: Date) {
         self.id = id
         self.title = title
+        self.date =
     }
 }
 
-/*
+
 import Foundation
 
 struct Goal: Identifiable, Codable {

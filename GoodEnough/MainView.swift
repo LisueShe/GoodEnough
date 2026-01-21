@@ -19,217 +19,265 @@ struct MainView: View {
     @ObservedObject var store: GoalStore
     @State private var selectedMood: Mood? = nil
     @State private var completedGoals: Set<UUID> = []
-
+    
     @State private var showAdjustGoalsSheet = false
     @StateObject private var dailyCheckIn = DailyCheckInStore()
     @StateObject private var dailyGoals = DailyGoalStore()
-    
     var body: some View {
         NavigationView {
-            VStack(alignment: .leading, spacing: 12) {
-                if store.goals.isEmpty {
-                    Text("No goals found.\nGo add some!")
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .foregroundColor(.gray)
-                } else {
-                    let columns = [
-                        GridItem(.adaptive(minimum: 90), spacing: 12)
-                    ]
-                    VStack(alignment: .leading, spacing: 12) {
+            // 1. Use GeometryReader to get the height of the visible screen area
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(spacing: 0) { // Parent container
                         
-                        Text("How are you feeling today?")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                        
-                        LazyVGrid(columns: columns, spacing: 12) {
-                            ForEach(Mood.allCases, id: \.self) { mood in
-                                Button {
-                                    dailyCheckIn.selectedMood = mood
-                                } label: {
-                                    Text(mood.rawValue)
-                                        .fixedSize(horizontal: true, vertical: false)
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 8)
-                                        .fontWeight(dailyCheckIn.selectedMood == mood ? .bold : .regular)
-                                        .foregroundColor(dailyCheckIn.selectedMood == mood ? .white : .primary)
-                                        .background(
-                                            dailyCheckIn.selectedMood == mood
-                                            ? Color.blue.opacity(0.25)
-                                            : Color.gray.opacity(0.15)
-                                        )
-                                        .cornerRadius(10)
-                                }
-                                .disabled(dailyCheckIn.isLocked)
-                                .opacity(dailyCheckIn.isLocked ? 0.5 : 1)
-                            }
-                        }
-                        .padding(.horizontal, 16)
-                        
-                        if dailyCheckIn.isLocked {
-                            VStack(spacing: 8) {
-                                Text("Today is complete 🌱")
-                                    .font(.subheadline)
-                                    .foregroundColor(.green)
-                                Text(
-                                        DailyReflection.generate(
-                                            mood: dailyCheckIn.selectedMood,
-                                            completed: dailyGoals.completedGoalIDs.count,
-                                            total: dailyGoals.activeGoalIDs.count
-                                        )
-                                    )
-                                    .multilineTextAlignment(.center)
+                        // 2. Your existing content logic
+                        VStack(alignment: .leading, spacing: 6) {
+                            if store.goals.isEmpty {
+                                VStack(spacing: 16) {
+                                    Text("Welcome to GoodEnough")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                    
+                                    Text("""
+                            This app is for days when doing everything feels like too much.
+                            
+                            Start with one small goal.
+                            That’s enough.
+                            """)
+                                    .font(.body)
                                     .foregroundColor(.secondary)
-                                  //  .padding()
-                                // Optional: undo button
-                                Button {
-                                    dailyCheckIn.unlockToday()
-                                    dailyGoals.resetForToday()
-                                } label: {
-                                    Text("Undo today’s completion")
-                                        .font(.footnote)
-                                        .foregroundColor(.blue)
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.top, 8)
-                        }
-                        else if let mood = dailyCheckIn.selectedMood,
-                                mood == .low || mood == .okay {
-                            Button {
-                                showAdjustGoalsSheet = true
-                            } label: {
-                                Text("Help me adjust today’s goals")
-                                    .font(.subheadline)
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 10)
-                                    .background(Color.blue.opacity(0.15))
-                                    .cornerRadius(10)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding(.top, 8)
-                        }
-                        if !dailyCheckIn.isLocked {
-                            VStack(spacing: 12) {
-                                Divider()
-                                    .padding(.horizontal)
-
-                                HStack {
-                                    Spacer()
-                                    Button {
-                                        dailyCheckIn.saveDay(completedGoals: Array(dailyGoals.completedGoalIDs))
-                                        dailyCheckIn.lockToday()
-                                    } label: {
-                                        Text("Check Out for Today")
-                                            .font(.headline)
-                                            .foregroundColor(.white)
-                                            .padding(.vertical, 12)
-                                            .padding(.horizontal, 24)
-                                            .background(Color.orange.opacity(0.7))
-                                            .cornerRadius(12)
-                                            .shadow(color: Color.orange.opacity(0.4), radius: 4, x: 0, y: 2)
-                                    }
-                                    Spacer()
-                                }
-
-                                Text("Lock your day even if not all goals are completed")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
                                     .multilineTextAlignment(.center)
-                                    .padding(.horizontal)
-                            }
-                            .padding(.vertical, 12)
-                        }
-                    }
-                    .padding(.vertical)
-                
-                    List {
-                        Section {
-                            ForEach(store.goals.filter { dailyGoals.isGoalActive($0.id) }) { goal in
-                                HStack(spacing: 12) {
-                                    Button {
-                                        dailyGoals.toggleGoal(goal.id)
-                                    } label: {
-                                        Image(systemName:
-                                            dailyGoals.completedGoalIDs.contains(goal.id)
-                                            ? "checkmark.circle.fill"
-                                            : "circle"
-                                        )
-                                        .foregroundColor(
-                                            dailyGoals.completedGoalIDs.contains(goal.id)
-                                            ? .blue
-                                            : .gray
-                                        )
-                                        .font(.system(size: 18))
+                                    
+                                    NavigationLink(
+                                        destination: GoalSetupView(store: store, hasCompletedSetup: .constant(false))
+                                    ) {
+                                        Text("Add your first goal")
+                                            .font(.headline)
+                                            .padding(.horizontal, 24)
+                                            .padding(.vertical, 12)
+                                            .background(Color.blue.opacity(0.8))
+                                            .foregroundColor(.white)
+                                            .cornerRadius(12)
                                     }
-                                    .disabled(dailyCheckIn.isLocked)
-                                    Text(goal.title)
-                                        .foregroundColor(.gray)
                                 }
-                                .padding(.vertical, 8)
-                                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-                                .listRowBackground(Color.clear)
-                                .listStyle(.plain)
-                                .listRowSeparator(.hidden)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .padding()
+                                
+                                /*
+                                 Text("No goals found.\nGo add some!")
+                                 .multilineTextAlignment(.center)
+                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                 .foregroundColor(.gray)
+                                 */
+                            } else {
+                                let columns = [
+                                    GridItem(.adaptive(minimum: 90), spacing: 12)
+                                ]
+                                VStack(alignment: .leading, spacing: 12) {
+                                    
+                                    Text("How are you feeling today?")
+                                        .font(.headline)
+                                        .frame(maxWidth: .infinity, alignment: .center)
+                                    
+                                    LazyVGrid(columns: columns, spacing: 12) {
+                                        ForEach(Mood.allCases, id: \.self) { mood in
+                                            Button {
+                                                dailyCheckIn.selectedMood = mood
+                                                dailyCheckIn.saveDuringDay()
+                                            } label: {
+                                                Text(mood.rawValue)
+                                                    .fixedSize(horizontal: true, vertical: false)
+                                                    .padding(.horizontal, 12)
+                                                    .padding(.vertical, 8)
+                                                    .fontWeight(dailyCheckIn.selectedMood == mood ? .bold : .regular)
+                                                    .foregroundColor(dailyCheckIn.selectedMood == mood ? .white : .primary)
+                                                    .background(
+                                                        dailyCheckIn.selectedMood == mood
+                                                        ? Color.blue.opacity(0.25)
+                                                        : Color.gray.opacity(0.15)
+                                                    )
+                                                    .cornerRadius(10)
+                                            }
+                                            .disabled(dailyCheckIn.isLocked)
+                                            .opacity(dailyCheckIn.isLocked ? 0.5 : 1)
+                                        }
+                                    }
+                                    .padding(.horizontal, 16)
+                
+                                    
+                                    if dailyCheckIn.isLocked {
+                                        VStack(spacing: 12) {
+                                            DailySummaryView(
+                                                mood: dailyCheckIn.selectedMood,
+                                                completed: dailyGoals.completedGoalIDs.count,
+                                                total: dailyGoals.activeGoalIDs.count,
+                                                reflection: DailyReflection.generate(
+                                                    mood: dailyCheckIn.selectedMood,
+                                                    completed: dailyGoals.completedGoalIDs.count,
+                                                    total: dailyGoals.activeGoalIDs.count
+                                                )
+                                            )
+                                            
+                                            Button {
+                                                dailyCheckIn.unlockToday()
+                                                dailyGoals.resetForToday(with: store.goals)
+                                            } label: {
+                                                Text("Undo today’s completion")
+                                                    .font(.footnote)
+                                                    .foregroundColor(.blue)
+                                            }
+                                            
+                                            Divider().padding(.top, 8)
+                                            
+                                            Text("Looking ahead to tomorrow")
+                                                .font(.headline)
+                                            
+                                            Button {
+                                                dailyCheckIn.setTomorrowIntent(.keepAll)
+                                            } label: {
+                                                Text("Keep these goals")
+                                                    .frame(maxWidth: .infinity)
+                                                    .padding()
+                                                    .background(Color.blue.opacity(0.15))
+                                                    .cornerRadius(10)
+                                            }
+                                            
+                                            Button {
+                                                dailyCheckIn.setTomorrowIntent(.startFresh)
+                                            } label: {
+                                                Text("Start fresh tomorrow")
+                                                    .frame(maxWidth: .infinity)
+                                                    .padding()
+                                                    .background(Color.gray.opacity(0.15))
+                                                    .cornerRadius(10)
+                                            }
+                                        }
+                                        .padding(.top, 12)
+                                    }
+                                    
+                                    else if let mood = dailyCheckIn.selectedMood,
+                                            mood == .low || mood == .okay {
+                                        Button {
+                                            showAdjustGoalsSheet = true
+                                        } label: {
+                                            Text("Help me adjust today’s goals")
+                                                .font(.subheadline)
+                                                .padding(.horizontal, 16)
+                                                .padding(.vertical, 10)
+                                                .background(Color.blue.opacity(0.15))
+                                                .cornerRadius(10)
+                                        }
+                                        .frame(maxWidth: .infinity, alignment: .center)
+                                        .padding(.top, 8)
+                                    }
+                                    if !dailyCheckIn.isLocked {
+                                        VStack(spacing: 12) {
+                                            Divider()
+                                                .padding(.horizontal)
+                                            HStack {
+                                                Spacer()
+                                                Button {
+                                                    dailyCheckIn.saveDay(
+                                                        completedGoals: Array(dailyGoals.completedGoalIDs),
+                                                        totalGoals: dailyGoals.activeGoalIDs.count,
+                                                        allGoals: store.goals,
+                                                        saveDate: Calendar.current.startOfDay(for: Date())
+                                                    )
+                                                    dailyCheckIn.lockToday()
+                                                } label: {
+                                                    Text("Check Out for Today")
+                                                        .font(.headline)
+                                                        .foregroundColor(.white)
+                                                        .padding(.vertical, 12)
+                                                        .padding(.horizontal, 24)
+                                                        .background(Color.orange.opacity(0.7))
+                                                        .cornerRadius(12)
+                                                        .shadow(color: Color.orange.opacity(0.4), radius: 4, x: 0, y: 2)
+                                                }
+                                                Spacer()
+                                            }
+                                            
+                                            Text("Lock your day even if not all goals are completed")
+                                                .font(.footnote)
+                                                .foregroundColor(.gray)
+                                                .multilineTextAlignment(.center)
+                                                .padding(.horizontal)
+                                        }
+                                        .padding(.vertical, 12)
+                                    }
+                                }
+                                .padding(.vertical)
+                                if !store.goals.filter({ dailyGoals.isGoalActive($0.id) }).isEmpty {
+                                    Text("Today's Goals")
+                                        .font(.title3)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(Color(.darkGray))
+                                        .padding(.horizontal)
+                                    
+                                    VStack(spacing: 12) {
+                                        ForEach(store.goals.filter { dailyGoals.isGoalActive($0.id) }) { goal in
+                                            HStack(spacing: 12) {
+                                                Button {
+                                                    dailyGoals.toggleGoal(goal.id)
+                                                } label: {
+                                                    Image(systemName:
+                                                            dailyGoals.completedGoalIDs.contains(goal.id)
+                                                          ? "checkmark.circle.fill"
+                                                          : "circle"
+                                                    )
+                                                    .foregroundColor(
+                                                        dailyGoals.completedGoalIDs.contains(goal.id)
+                                                        ? .blue
+                                                        : .gray
+                                                    )
+                                                    .font(.system(size: 18))
+                                                }
+                                                .disabled(dailyCheckIn.isLocked)
+                                                
+                                                Text(goal.title)
+                                                    .foregroundColor(.secondary)
+                                                Spacer()
+                                            }
+                                            .padding(.horizontal, 12)
+                                            .background(Color.clear)
+                                            .cornerRadius(12)
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
                             }
-                        } header: {
-                            Text("Today's Goals")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .foregroundColor(Color(.darkGray))
-                                .padding(.horizontal)
                         }
-                    }
-                    .listStyle(.plain)
-                }
-                NavigationLink(
-                    destination: GoalSetupView(store: store, hasCompletedSetup: .constant(true))
-                ) {
-                    Text("Manage Goals")
+                        
+                        // 3. This Spacer pushes the button down if there is extra room
+                        Spacer(minLength: 20)
+                        
+                        // 4. Your Manage Goals Button
+                        NavigationLink(
+                            destination: GoalSetupView(store: store, hasCompletedSetup: .constant(true))
+                        ) {
+                            Text("Manage Goals")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(12)
+                        }
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-            }
-            .sheet(isPresented: $showAdjustGoalsSheet) {
-                AdjustGoalsView(
-                    store: store,
-                    dailyGoals: dailyGoals,
-                    isPresented: $showAdjustGoalsSheet   // 👈 ADD THIS
-                )
-            }
-            .onAppear {
-                let today = Calendar.current.startOfDay(for: Date())
-                
-                // Reset daily goals if it's a new day
-                dailyGoals.initializeForToday(with: store.goals)
-                
-                // Reset mood and lock if new day
-                if !Calendar.current.isDate(dailyCheckIn.lastSavedDate, inSameDayAs: today) {
-                    dailyCheckIn.resetForNewDay()
-                }
-            }
-/*
-            .onAppear {
-                dailyGoals.initializeForToday(
-                    with: store.goals.map { $0.id }
-                )
-                if DayTracker.isNewDay() {
-                    dailyCheckIn.resetForNewDay()
-                    dailyGoals.resetForNewDay()
-                }
-            }
- */
-            .onChange(of: dailyGoals.completedGoalIDs) { _ in
-                if dailyGoals.allGoalsCompleted(allGoals: store.goals) && !dailyCheckIn.isLocked {
-                    dailyCheckIn.saveDay(completedGoals: Array(dailyGoals.completedGoalIDs))
-                    dailyCheckIn.lockToday()
+                    }
+                    // 5. Crucial: Ensure the VStack is at least as tall as the screen
+                    .frame(minHeight: geometry.size.height)
                 }
             }
             .navigationTitle("GoodEnough")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        HistoryView(dailyCheckIn: dailyCheckIn, store: store)
+                    } label: {
+                        Image(systemName: "clock.arrow.circlepath")
+                    }
+                }
+            }
         }
     }
 }
-
